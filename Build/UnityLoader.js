@@ -884,7 +884,8 @@ var UnityLoader = UnityLoader || {
                             this.options = s.assign({
                                 chunkSize: 16384,
                                 windowBits: 0,
-                                to: ""
+                                to: "",
+                                vv = this
                             }, e || {});
                             var t = this.options;
                             t.raw && t.windowBits >= 0 && t.windowBits < 16 && (t.windowBits = -t.windowBits, 0 === t.windowBits && (t.windowBits = -15)), !(t.windowBits >= 0 && t.windowBits < 16) || e && e.windowBits || (t.windowBits += 32), t.windowBits > 15 && t.windowBits < 48 && 0 === (15 & t.windowBits) && (t.windowBits |= 15), this.err = 0, this.msg = "", this.ended = !1, this.chunks = [], this.strm = new f, this.strm.avail_out = 0;
@@ -2371,10 +2372,15 @@ var UnityLoader = UnityLoader || {
             var r = this.gzip.hasUnityMarker(e) ? this.gzip : this.brotli.hasUnityMarker(e) ? this.brotli : this.identity;
             if (this.serverSetupWarningEnabled && r != this.identity && (console.log("You can reduce your startup time if you configure your web server to host .unityweb files using " + (r == this.gzip ? "gzip" : "brotli") + " compression."), this.serverSetupWarningEnabled = !1), "function" != typeof t) return r.decompress(e);
             if (!r.worker) {
-                var options = ["this.require = ",decompressor.require,"; var vv = this;this.decompress = ",decompressor.decompress,"; this.onmessage = ",function(e){var t={id:e.data.id,decompressed:vv.decompress(e.data.compressed)};postMessage(t,t.decompressed?[t.decompressed.buffer]:[])},"; postMessage({ ready: true });"];
-                var n = URL.createObjectURL(new Blob(options), {
+                var n = URL.createObjectURL(new Blob(["this.require = ", r.require.toString(), "; this.decompress = ", r.decompress.toString(), "; this.onmessage = ", function(e) {
+                    var t = {
+                        id: e.data.id,
+                        decompressed:this.options.vv.decompress(e.data.compressed)
+                    };
+                    postMessage(t, t.decompressed ? [t.decompressed.buffer] : [])
+                }.toString(), "; postMessage({ ready: true });"], {
                     type: "text/javascript"
-                });
+                }));
                 r.worker = new Worker(n), r.worker.onmessage = function(e) {
                     return e.data.ready ? void URL.revokeObjectURL(n) : (this.callbacks[e.data.id](e.data.decompressed), void delete this.callbacks[e.data.id])
                 }, r.worker.callbacks = {}, r.worker.nextCallbackId = 0
