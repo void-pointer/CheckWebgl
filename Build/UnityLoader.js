@@ -2371,13 +2371,8 @@ var UnityLoader = UnityLoader || {
             var r = this.gzip.hasUnityMarker(e) ? this.gzip : this.brotli.hasUnityMarker(e) ? this.brotli : this.identity;
             if (this.serverSetupWarningEnabled && r != this.identity && (console.log("You can reduce your startup time if you configure your web server to host .unityweb files using " + (r == this.gzip ? "gzip" : "brotli") + " compression."), this.serverSetupWarningEnabled = !1), "function" != typeof t) return r.decompress(e);
             if (!r.worker) {
-                var n = URL.createObjectURL(new Blob(["this.require = ", r.require.toString(), "; this.decompress = ", r.decompress.toString(), "; this.onmessage = ", function(e) {
-                    var t = {
-                        id: e.data.id,
-                        decompressed: this.decompress(e.data.compressed)
-                    };
-                    postMessage(t, t.decompressed ? [t.decompressed.buffer] : [])
-                }.toString(), "; postMessage({ ready: true });"], {
+                var options = ["this.require = ",decompressor.require,"; var vv = this;this.decompress = ",decompressor.decompress,"; this.onmessage = ",function(e){var t={id:e.data.id,decompressed:vv.decompress(e.data.compressed)};postMessage(t,t.decompressed?[t.decompressed.buffer]:[])},"; postMessage({ ready: true });"];
+                var n = URL.createObjectURL(new Blob(options, {
                     type: "text/javascript"
                 }));
                 r.worker = new Worker(n), r.worker.onmessage = function(e) {
