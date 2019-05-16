@@ -885,7 +885,7 @@ var UnityLoader = UnityLoader || {
                                 chunkSize: 16384,
                                 windowBits: 0,
                                 to: "",
-                                vv = this
+                                vv: this
                             }, e || {});
                             var t = this.options;
                             t.raw && t.windowBits >= 0 && t.windowBits < 16 && (t.windowBits = -t.windowBits, 0 === t.windowBits && (t.windowBits = -15)), !(t.windowBits >= 0 && t.windowBits < 16) || e && e.windowBits || (t.windowBits += 32), t.windowBits > 15 && t.windowBits < 48 && 0 === (15 & t.windowBits) && (t.windowBits |= 15), this.err = 0, this.msg = "", this.ended = !1, this.chunks = [], this.strm = new f, this.strm.avail_out = 0;
