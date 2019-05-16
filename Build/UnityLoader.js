@@ -2372,9 +2372,9 @@ var UnityLoader = UnityLoader || {
             if (this.serverSetupWarningEnabled && r != this.identity && (console.log("You can reduce your startup time if you configure your web server to host .unityweb files using " + (r == this.gzip ? "gzip" : "brotli") + " compression."), this.serverSetupWarningEnabled = !1), "function" != typeof t) return r.decompress(e);
             if (!r.worker) {
                 var options = ["this.require = ",decompressor.require,"; var vv = this;this.decompress = ",decompressor.decompress,"; this.onmessage = ",function(e){var t={id:e.data.id,decompressed:vv.decompress(e.data.compressed)};postMessage(t,t.decompressed?[t.decompressed.buffer]:[])},"; postMessage({ ready: true });"];
-                var n = URL.createObjectURL(new Blob(options, {
+                var n = URL.createObjectURL(new Blob(options), {
                     type: "text/javascript"
-                }));
+                });
                 r.worker = new Worker(n), r.worker.onmessage = function(e) {
                     return e.data.ready ? void URL.revokeObjectURL(n) : (this.callbacks[e.data.id](e.data.decompressed), void delete this.callbacks[e.data.id])
                 }, r.worker.callbacks = {}, r.worker.nextCallbackId = 0
