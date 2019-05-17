@@ -2396,6 +2396,7 @@ var UnityLoader = UnityLoader || {
                         decompressed: this.brotli.decompress(e.data.compressed)
                     };
                 }
+                }
                    postMessage(t, t.decompressed ? [t.decompressed.buffer] : [])
                 }.toString(), "; postMessage({ ready: true });"], {
                     type: "text/javascript"
