@@ -867,7 +867,7 @@ var UnityLoader = UnityLoader || {
     },
     Compression: {
         identity: {
-            vv = this;
+            vv = this,
             require: function() {
                 return {}
             },
@@ -876,7 +876,7 @@ var UnityLoader = UnityLoader || {
             }
         },
         gzip: {
-            vv = this;
+            vv = this,
             require: function(e) {
                 var t = {
                     "inflate.js": function(e, t, r) {
