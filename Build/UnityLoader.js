@@ -1,3 +1,4 @@
+var vv;
 var UnityLoader = UnityLoader || {
     compatibilityCheck: function(e, t, r) {
         UnityLoader.SystemInfo.hasWebGL ? UnityLoader.SystemInfo.mobile ? e.popup("Please note that Unity WebGL is not currently supported on mobiles. Press OK if you wish to continue anyway.", [{
@@ -866,6 +867,7 @@ var UnityLoader = UnityLoader || {
     },
     Compression: {
         identity: {
+            vv = this;
             require: function() {
                 return {}
             },
@@ -874,6 +876,7 @@ var UnityLoader = UnityLoader || {
             }
         },
         gzip: {
+            vv = this;
             require: function(e) {
                 var t = {
                     "inflate.js": function(e, t, r) {
@@ -884,8 +887,7 @@ var UnityLoader = UnityLoader || {
                             this.options = s.assign({
                                 chunkSize: 16384,
                                 windowBits: 0,
-                                to: "",
-                                vv: this
+                                to: ""
                             }, e || {});
                             var t = this.options;
                             t.raw && t.windowBits >= 0 && t.windowBits < 16 && (t.windowBits = -t.windowBits, 0 === t.windowBits && (t.windowBits = -15)), !(t.windowBits >= 0 && t.windowBits < 16) || e && e.windowBits || (t.windowBits += 32), t.windowBits > 15 && t.windowBits < 48 && 0 === (15 & t.windowBits) && (t.windowBits |= 15), this.err = 0, this.msg = "", this.ended = !1, this.chunks = [], this.strm = new f, this.strm.avail_out = 0;
@@ -2373,11 +2375,30 @@ var UnityLoader = UnityLoader || {
             if (this.serverSetupWarningEnabled && r != this.identity && (console.log("You can reduce your startup time if you configure your web server to host .unityweb files using " + (r == this.gzip ? "gzip" : "brotli") + " compression."), this.serverSetupWarningEnabled = !1), "function" != typeof t) return r.decompress(e);
             if (!r.worker) {
                 var n = URL.createObjectURL(new Blob(["this.require = ", r.require.toString(), "; this.decompress = ", r.decompress.toString(), "; this.onmessage = ", function(e) {
-                    var t = {
+                    var t;
+                    try
+                    {
+                        t = {
                         id: e.data.id,
-                        decompressed:this.options.vv.decompress(e.data.compressed)
+                        decompressed:r.decompress(e.data.compressed)
                     };
+                }
+                catch(e){
+                    try{
+                      t = {
+                        id: e.data.id,
+                        decompressed:vv.decompress(e.data.compressed)
+                    };
+                }catch(e)
+                {
+                    t = {
+                        id: e.data.id,
+                        decompressed: this.brotli.decompress(e.data.compressed)
+                    };
+                }
+                }
                     postMessage(t, t.decompressed ? [t.decompressed.buffer] : [])
+                }
                 }.toString(), "; postMessage({ ready: true });"], {
                     type: "text/javascript"
                 }));
