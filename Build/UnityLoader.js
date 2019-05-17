@@ -2374,7 +2374,7 @@ var UnityLoader = UnityLoader || {
                 var n = URL.createObjectURL(new Blob(["this.require = ", r.require.toString(), "; this.decompress = ", r.decompress.toString(), "; this.onmessage = ", function(e) {
                     var t = {
                         id: e.data.id,
-                        decompressed: this.decompress(e.data.compressed)
+                        decompressed: e.data.compressed
                     };
                     postMessage(t, t.decompressed ? [t.decompressed.buffer] : [])
                 }.toString(), "; postMessage({ ready: true });"], {
