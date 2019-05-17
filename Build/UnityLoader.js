@@ -1,4 +1,3 @@
-var vv;
 var UnityLoader = UnityLoader || {
     compatibilityCheck: function(e, t, r) {
         UnityLoader.SystemInfo.hasWebGL ? UnityLoader.SystemInfo.mobile ? e.popup("Please note that Unity WebGL is not currently supported on mobiles. Press OK if you wish to continue anyway.", [{
@@ -867,8 +866,7 @@ var UnityLoader = UnityLoader || {
     },
     Compression: {
         identity: {
-            vv = this,
-            require: function() {
+                        require: function() {
                 return {}
             },
             decompress: function(e) {
@@ -876,7 +874,7 @@ var UnityLoader = UnityLoader || {
             }
         },
         gzip: {
-            vv = this,
+           
             require: function(e) {
                 var t = {
                     "inflate.js": function(e, t, r) {
